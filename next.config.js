@@ -9,13 +9,13 @@ module.exports = withTM({
       "monaco-languageclient/lib/vscode-compatibility"
     );
 
-    config.plugins.push(
-      new MonacoWebpackPlugin({
-        languages: ["json"],
-        features: [],
-        filename: "static/[name].worker.js",
-      })
-    );
+    // config.plugins.push(
+    //   new MonacoWebpackPlugin({
+    //     languages: ["json"],
+    //     features: [],
+    //     filename: "static/[name].worker.js",
+    //   })
+    // );
     return config;
   },
 });
