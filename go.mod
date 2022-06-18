@@ -1,6 +1,6 @@
-module github.com/dstotijn/golang-nextjs-portable
+module github.com/BoiseITGuru/tx-script-utility
 
-go 1.18
+go 1.0
 
 require (
 	cloud.google.com/go v0.100.2 // indirect
