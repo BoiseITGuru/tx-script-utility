@@ -1,5 +1,5 @@
 export const fetchRegistry = async () => {
-  const url = `https://raw.githubusercontent.com/emerald-dao/contract-registry/869e328e1b8a2b41910332584c8dbf540df61900/flow.json`;
+  const url = `/flow.json`;
   const response = await fetch(url);
   return response.json();
 };
