@@ -20,6 +20,6 @@ FROM alpine:${ALPINE_VERSION}
 WORKDIR /app
 COPY --from=go-builder /app/golang-nextjs-portable .
 
-ENTRYPOINT ["./golang-nextjs-portable"]
+ENTRYPOINT ["./tx-script-utility"]
 
 EXPOSE 8080

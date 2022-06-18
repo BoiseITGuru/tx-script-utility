@@ -9,7 +9,7 @@ require (
 	cloud.google.com/go/kms v1.4.0 // indirect
 	github.com/a8m/envsubst v1.3.0 // indirect
 	github.com/araddon/dateparse v0.0.0-20210429162001-6b43995a97de // indirect
-	github.com/bjartek/overflow v0.0.0-20220616135500-092b9cbd43be // indirect
+	github.com/bjartek/overflow v0.0.0-20220616135500-092b9cbd43be
 	github.com/btcsuite/btcd v0.22.0-beta // indirect
 	github.com/bwmarrin/discordgo v0.23.2 // indirect
 	github.com/cespare/xxhash v1.1.0 // indirect
