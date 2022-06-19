@@ -1,4 +1,5 @@
 export const fetchRegistry = async () => {
+  // TODO: THis should point back to an updatable backend
   const url = `/flow.json`;
   const response = await fetch(url);
   return response.json();
