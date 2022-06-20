@@ -22,7 +22,7 @@ Use the link below to learn more about the CLI or you can install it directly us
 
 ## Current Status
 
-The playground and CLI are still undergoing heavy development, the CLI requires manual compiling still but does connect to the playground and will execute scripts.
+The playground and CLI are still undergoing heavy development, the CLI is written in GO and requires manual compiling still. Once we have finished development it will be available as an NPM package. Currently, the CLI connects to the playground and starts the emulators as well as executes scripts.
 
 ## Known Issues
 
