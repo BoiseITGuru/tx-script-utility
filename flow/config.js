@@ -1,10 +1,10 @@
 import { config } from "@onflow/fcl";
 
 const title = "Transaction and Script Builder";
+
 const localnetConfig = {
   "app.detail.title": title,
   "accessNode.api": "http://localhost:8888",
-  "discovery.wallet": "https://fcl-discovery.onflow.org/testnet/authn",
 };
 
 const testnetConfig = {
@@ -22,9 +22,15 @@ const mainnetConfig = {
 config(testnetConfig);
 
 export const configureForNetwork = (network) => {
-  if (network === "testnet") {
-    config(localnetConfig);
-  } else if (network === "mainnet") {
-    config(mainnetConfig);
+  switch (network) {
+    case "mainnet":
+      config(mainnetConfig);
+      break;
+    case "testnet":
+      config(testnetConfig);
+      break;
+    case "emulator":
+      config(localnetConfig);
+      break;
   }
 };

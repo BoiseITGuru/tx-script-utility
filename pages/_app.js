@@ -6,20 +6,50 @@ import * as fcl from "@onflow/fcl";
 import { NetworkProvider } from "../contexts/NetworkContext";
 import { configureForNetwork } from "../flow/config";
 import React, { useState } from "react";
+import {MultiSwitch} from 'react-multi-switch'
+// import { WebSocket } from 'nextjs-websocket'
+import { startLocalEmulator, stopLocalEmulator, sendMsgToLocalEmulator} from "../utils/localEmulator"
 
 function MyApp({ Component, pageProps }) {
   const [network, setNetwork] = useState();
 
-  const switchNetwork = async (e) => {
+  const networkStates = [{
+    label: "Emulator",
+    key: "emulator"
+  }, {
+    label: "Testnet",
+    key: "testnet"
+  }, {
+    label: "Mainnet",
+    key: "mainnet"
+  }]
+
+  const switchNetwork = async (value) => {
     fcl.unauthenticate();
-    if (e.target.checked) {
-      configureForNetwork("mainnet");
-      setNetwork("mainnet");
-    } else {
-      configureForNetwork("testnet");
-      setNetwork("testnet");
+
+    switch (value) {
+      case 2:
+        stopLocalEmulator()
+        configureForNetwork("mainnet");
+        setNetwork("mainnet");
+        break;
+      case 1:
+        stopLocalEmulator()
+        configureForNetwork("testnet");
+        setNetwork("testnet");
+        break;
+      case 0:
+        startLocalEmulator()
+        configureForNetwork("emulator");
+        setNetwork("emulator");
+        break;
     }
   };
+
+  // function handleData(data) {
+  //   console.log(data);
+  // }
+
   useEffect(() => {
     console.log({ pageProps });
   }, [pageProps]);
@@ -32,15 +62,10 @@ function MyApp({ Component, pageProps }) {
             <h1>Cadence Editor</h1>
           </li>
         </ul>
-        <ul>
-          <li>
-            <label htmlFor="switch" onChange={switchNetwork}>
-              <span className="inputChange">Testnet</span>
-              <input type="checkbox" id="switch" name="switch" role="switch" />
-              <span className="inputChange">Mainnet</span>
-            </label>
-          </li>
-        </ul>
+        <div>
+          <MultiSwitch itemWidth={100} selIndex={0} onChange={switchNetwork} states={networkStates}>
+          </MultiSwitch>
+        </div>
       </nav>
       <main className="container">
         <TransactionProvider>
@@ -73,6 +98,10 @@ function MyApp({ Component, pageProps }) {
             </svg>
           </a>
         </p>
+        {/* <WebSocket
+          url='ws://localhost:5050'
+          onMessage={handleData.bind(this)}
+        /> */}
       </footer>
     </div>
   );
