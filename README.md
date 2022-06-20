@@ -26,4 +26,4 @@ The playground and CLI are still undergoing heavy development, the CLI is writte
 
 ## Known Issues
 
-1. The CLI does not safely close the emulator when the WebSocket connection is closed. The emulator is killed but leaves the ports hanging open causing the CLI to crash. To resolve you must map the ports to their PID and use ```kill -9 <PID>``` to close the ports before restarting the CLI.
+1. The CLI does not safely close the emulator when the WebSocket connection is closed. The emulator is killed but leaves the ports hanging open causing the CLI to crash when the WebSocket is reconnected. To resolve you must map the ports to their PID and use ```kill -9 <PID>``` to close the ports before restarting the CLI.
