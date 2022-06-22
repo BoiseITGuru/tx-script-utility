@@ -7,7 +7,6 @@ import { NetworkProvider } from "../contexts/NetworkContext";
 import { configureForNetwork } from "../flow/config";
 import React, { useState } from "react";
 import {MultiSwitch} from 'react-multi-switch'
-// import { WebSocket } from 'nextjs-websocket'
 import { startLocalEmulator, stopLocalEmulator, sendMsgToLocalEmulator} from "../utils/localEmulator"
 
 function MyApp({ Component, pageProps }) {
@@ -98,10 +97,6 @@ function MyApp({ Component, pageProps }) {
             </svg>
           </a>
         </p>
-        {/* <WebSocket
-          url='ws://localhost:5050'
-          onMessage={handleData.bind(this)}
-        /> */}
       </footer>
     </div>
   );
