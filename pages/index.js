@@ -22,7 +22,7 @@ import { baseTransaction, flovatarTotalSupply } from "../templates/code";
 import * as fcl from "@onflow/fcl";
 
 import "../flow/config.js";
-import { configureForNetwork } from "../flow/config";
+import { configureForNetwork, currentNetwork } from "../flow/config";
 import { debounce, fetchRegistry, prepareEnvironments } from "../utils";
 
 const CadenceChecker = dynamic(
@@ -31,7 +31,7 @@ const CadenceChecker = dynamic(
 );
 
 const getButtonLabel = (type, signers = 0) => {
-  if (type === "contract") {
+  if (type === "contract" && currentNetwork != "emulator") {
     return "Not Supported";
   }
 
@@ -84,6 +84,10 @@ export default function Home() {
     const newCode = replaceImportAddresses(code, env);
     updateScriptCode(newCode);
   };
+
+  // TODO: Get Signature
+  const emulatorSig = "Some Signature";
+
   const send = async () => {
     await setEnvironment(network);
     extendEnvironment(registry);
@@ -103,7 +107,7 @@ export default function Home() {
 
       // Transaction Handling
       case type === "transaction": {
-        if (!fcl.currentUser()) {
+        if (network !== "emulator" && !fcl.currentUser()) {
           configureForNetwork(network);
           await fcl.authenticate();
         }
@@ -111,8 +115,9 @@ export default function Home() {
         const [txResult, txError] = await sendTransaction({
           code,
           limit: 9999,
-          payer: fcl.authz,
+          payer: network !== "emulator" ? fcl.authz:emulatorSig,
         });
+        
         if (!txError) {
           setResult(txResult);
         } else {
@@ -122,10 +127,15 @@ export default function Home() {
         break;
       }
 
+      case type === "contract": {
+        console.log("deploying contract")
+      }
+
       default:
         break;
     }
   };
+  
   const getRegistry = async () => {
     const data = await fetchRegistry();
     const registry = prepareEnvironments(data);
@@ -153,14 +163,14 @@ export default function Home() {
   );
 
   const fclAble = signers && signers === 1 && type === "transaction";
-  const disabled =
-    type === "unknown" || type === "contract" || !monacoReady || signers > 1;
+  const disabled = type === "unknown" || !monacoReady || signers > 1 || type === "contract" && network !== "emulator";
+
 
   return (
     <div>
       <Head>
         <title>Cadence Transaction Editor</title>
-        <meta name="description" content="My first web3 app on Flow!" />
+        <meta name="description" content="Emerald City Playground" />
         <link rel="icon" href="/favicon.png" />
       </Head>
 

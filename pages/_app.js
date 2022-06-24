@@ -7,7 +7,7 @@ import { NetworkProvider } from "../contexts/NetworkContext";
 import { configureForNetwork } from "../flow/config";
 import React, { useState } from "react";
 import {MultiSwitch} from 'react-multi-switch'
-import { startLocalEmulator, stopLocalEmulator, sendMsgToLocalEmulator} from "../utils/localEmulator"
+import { startLocalEmulator, stopLocalEmulator, emulatorRunning} from "../utils/localEmulator"
 
 function MyApp({ Component, pageProps }) {
   const [network, setNetwork] = useState();
@@ -23,31 +23,29 @@ function MyApp({ Component, pageProps }) {
     key: "mainnet"
   }]
 
+  const configureNetwork = (network) => {
+    configureForNetwork(network);
+    setNetwork(network);
+    console.log(`On the ${network} network`)
+  }
+
   const switchNetwork = async (value) => {
     fcl.unauthenticate();
 
     switch (value) {
       case 2:
         stopLocalEmulator()
-        configureForNetwork("mainnet");
-        setNetwork("mainnet");
+        configureNetwork("mainnet");
         break;
       case 1:
         stopLocalEmulator()
-        configureForNetwork("testnet");
-        setNetwork("testnet");
+        configureNetwork("testnet");
         break;
       case 0:
-        startLocalEmulator()
-        configureForNetwork("emulator");
-        setNetwork("emulator");
+        startLocalEmulator(configureNetwork)
         break;
     }
   };
-
-  // function handleData(data) {
-  //   console.log(data);
-  // }
 
   useEffect(() => {
     console.log({ pageProps });

@@ -1,6 +1,7 @@
 import { config } from "@onflow/fcl";
 
 const title = "Transaction and Script Builder";
+export var currentNetwork
 
 const localnetConfig = {
   "app.detail.title": title,
@@ -33,4 +34,6 @@ export const configureForNetwork = (network) => {
       config(localnetConfig);
       break;
   }
+
+  currentNetwork = network;
 };
