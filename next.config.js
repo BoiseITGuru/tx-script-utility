@@ -3,6 +3,16 @@ const nextTranspileModules = require("next-transpile-modules");
 const withTM = nextTranspileModules(["monaco-editor", "flow-cadut"]);
 
 module.exports = withTM({
+  async headers() {
+    return [
+    {
+      source: "/",
+      headers: [
+     { key: "Access-Control-Allow-Origin", value: "*" },
+    ]
+    }
+    ]
+},
   reactStrictMode: true,
   webpack: (config) => {
     config.resolve.alias["vscode"] = require.resolve(

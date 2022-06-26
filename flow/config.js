@@ -3,9 +3,10 @@ import { config } from "@onflow/fcl";
 const title = "Transaction and Script Builder";
 export var currentNetwork
 
-const localnetConfig = {
+const emulatorConfig = {
   "app.detail.title": title,
   "accessNode.api": "http://localhost:8888",
+  "discovery.wallet": "http://localhost:8701/fcl/authn",
 };
 
 const testnetConfig = {
@@ -31,7 +32,7 @@ export const configureForNetwork = (network) => {
       config(testnetConfig);
       break;
     case "emulator":
-      config(localnetConfig);
+      config(emulatorConfig);
       break;
   }
 
