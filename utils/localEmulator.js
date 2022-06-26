@@ -40,7 +40,7 @@ function openWSConnection(hostname, port, callback) {
 
             responseType: switch (wsMsgJSON.responseType) {
                 case "emulator-status":
-                    emulatorStatus: switch (wsMsgJSON.data.msg) {
+                    emulatorStatus: switch (wsMsgJSON.data) {
                         case "started":
                             callback("emulator")
                             break emulatorStatus;
