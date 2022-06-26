@@ -10,6 +10,7 @@ import {
   getEnvironment,
   extractImports,
   replaceImportAddresses,
+  hexContract
 } from "flow-cadut";
 
 import Transaction from "../components/Transaction";
@@ -95,6 +96,13 @@ export default function Home() {
     switch (true) {
       // Script Handling
       case type === "script": {
+        // if (!fcl.currentUser()) {
+        //   configureForNetwork(network);
+        //   await fcl.authenticate();
+        // }
+
+        await fcl.authenticate();
+        
         const [result, scriptError] = await executeScript({ code });
         if (!scriptError) {
           setResult(result);
@@ -102,20 +110,33 @@ export default function Home() {
           setResult(scriptError);
           console.error(scriptError);
         }
+
+        await fcl.unauthenticate();
         break;
       }
 
       // Transaction Handling
       case type === "transaction": {
-        if (network !== "emulator" && !fcl.currentUser()) {
+        // if (network !== "emulator" && !fcl.currentUser()) {
+        //   configureForNetwork(network);
+        //   await fcl.authenticate();
+        // }
+
+        if (!fcl.currentUser()) {
           configureForNetwork(network);
           await fcl.authenticate();
         }
 
+        // const [txResult, txError] = await sendTransaction({
+        //   code,
+        //   limit: 9999,
+        //   payer: network !== "emulator" ? fcl.authz:emulatorSig,
+        // });
+
         const [txResult, txError] = await sendTransaction({
           code,
           limit: 9999,
-          payer: network !== "emulator" ? fcl.authz:emulatorSig,
+          payer: fcl.authz,
         });
         
         if (!txError) {
@@ -128,7 +149,35 @@ export default function Home() {
       }
 
       case type === "contract": {
-        console.log("deploying contract")
+        if (!fcl.currentUser()) {
+          configureForNetwork(network);
+          await fcl.authenticate();
+        }
+
+        contractHex = hexContract(code)
+        
+        const transactionId = await fcl.mutate({
+          cadence: `
+          transaction(name: String, cadence: String) {
+            prepare(signer: AuthAccount) {
+              let code = cadence.utf8
+              signer.contracts.add(
+                name: name,
+                code: code,
+                message: "I'm a new contract in an existing account"
+            )
+            }
+          }
+          `,
+          args: (arg, t) => [
+            arg("Test", t.String),
+            arg(contractHex, t.UInt8)
+          ],
+          payer: fcl.authz,
+          proposer: fcl.authz,
+          authorizations: [fcl.authz],
+          limit: 999
+        });
       }
 
       default:
